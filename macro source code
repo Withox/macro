@@ -1,0 +1,47 @@
+#SingleInstance Force
+SetBatchLines -1
+
+; ──────────────── GUI 창 만들기 ────────────────
+Gui, Color, 1e1e1e
+Gui, Font, s12 bold c00FF00, Malgun Gothic
+Gui, Add, Text, cLime Center w300, 초고속 연타 매크로
+Gui, Font, s10 norm cWhite
+Gui, Add, Text, x20 y50 cAqua, 상태: 대기중
+Gui, Add, Button, x50 y90 w200 h50 g연타토글, 시작 / 정지 (F10)
+Gui, Add, Text, x10 y150 w280 center cGray, Esc = 강제 정지 │ F11 = 완전 종료
+Gui, Show, w300 h200 Center, 연타 매크로 v1.0
+return
+
+; ──────────────── 연타 시작/정지 버튼 ────────────────
+연타토글:
+    연타중 := !연타중
+    if (연타중) {
+        GuiControl,, Static1, 상태: 연타 중... (미친듯이 클릭중)
+        GuiControl,, Button1, 정지 (F10)
+        SetTimer, 연타, 10
+    } else {
+        GuiControl,, Static1, 상태: 정지됨
+        GuiControl,, Button1, 시작 (F10)
+        SetTimer, 연타, Off
+    }
+return
+
+연타:
+    Click
+return
+
+F10::Gosub, 연타토글
+Esc::Gosub, 정지
+F11::ExitApp
+
+정지:
+    연타중 := false
+    GuiControl,, Static1, 상태: 강제 정지됨
+    GuiControl,, Button1, 시작 (F10)
+    SetTimer, 연타, Off
+return
+
+GuiClose:
+ExitApp
+
+[Be careful when sharing and distributing]
